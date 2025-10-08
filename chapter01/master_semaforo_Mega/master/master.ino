@@ -17,21 +17,21 @@ void setup() {
   pinMode(4, OUTPUT); // verde
 
   Serial.begin(9600);   // Para monitor serial del IDE
-  Serial1.begin(9600); // Comunicación con ESP32
+  // Serial1.begin(9600); // Comunicación con ESP32
 }
 
 void loop() {
   
   digitalWrite(2, HIGH); digitalWrite(3, LOW); digitalWrite(4, LOW);
   Serial.println("ROJO");
-  Serial1.println("ROJO");
+  // Serial1.println("ROJO");
   lcd.setCursor(0, 1);
   lcd.print("ROJO    ");
   delay(1000);
 
   digitalWrite(2, LOW); digitalWrite(3, HIGH); digitalWrite(4, LOW);
   Serial.println("AMARILLO");
-  Serial1.println("AMARILLO");
+  // Serial1.println("AMARILLO");
   lcd.setCursor(0, 1);
   lcd.print("AMARILLO");
   delay(1000);
@@ -40,7 +40,7 @@ void loop() {
 
   digitalWrite(2, LOW); digitalWrite(3, LOW); digitalWrite(4, HIGH);
   Serial.println("VERDE");
-  Serial1.println("VERDE");
+  // Serial1.println("VERDE");
   lcd.setCursor(0, 1);
   lcd.print("VERDE   ");
   delay(1000);

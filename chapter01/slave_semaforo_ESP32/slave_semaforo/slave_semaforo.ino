@@ -1,8 +1,14 @@
 #include <WiFi.h>
 #include <WebServer.h>
 
-const char* ssid = "IZZI-BA68";
-const char* password = "50A5DC2CBA68";
+// const char* ssid = "IZZI-BA68";
+// const char* password = "";
+
+// const char* ssid = "INFINITUM74C0_5";
+// const char* password = "mc02wwwP0M";
+
+const char* ssid = "Galaxy A55 5G B426";
+const char* password = "Tako0394";
 
 String estadoSemaforo = "Desconocido";
 
