@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Temperatura</title>
+    <style>
+        /* CSS BÁSICO */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        .sensor-data {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #2196f3;
+        }
+
+        .temp {
+            color: #d32f2f;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .hum {
+            color: #1976d2;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        button {
+            background: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌡️ Monitor de Sensor DHT11</h1>
+        
+        <div class="sensor-data">
+            <h2>Temperatura: <span class="temp" id="temperature">--</span>°C</h2>
+            <h2>Humedad: <span class="hum" id="humidity">--</span>%</h2>
+        </div>
+
+        <button onclick="actualizarDatos()">🔄 Actualizar Datos</button>
+        <button onclick="cambiarColor()">🎨 Cambiar Color</button>
+        
+        <p id="mensaje"></p>
+    </div>
+
+    <script>
+        // JAVASCRIPT BÁSICO
+        
+        // Función para actualizar datos (simulados)
+        function actualizarDatos() {
+            // Simular datos del sensor (luego vendrán del ESP32)
+            const temperatura = (Math.random() * 30 + 10).toFixed(1); // 10-40°C
+            const humedad = (Math.random() * 50 + 30).toFixed(1); // 30-80%
+            
+            // Actualizar HTML con los nuevos datos
+            document.getElementById('temperature').textContent = temperatura;
+            document.getElementById('humidity').textContent = humedad;
+            
+            // Mostrar mensaje
+            document.getElementById('mensaje').textContent = 
+                `Datos actualizados: ${new Date().toLocaleTimeString()}`;
+        }
+
+        // Función para cambiar colores
+        function cambiarColor() {
+            const colores = ['#e3f2fd', '#f3e5f5', '#e8f5e8', '#fff3e0'];
+            const sensorDiv = document.querySelector('.sensor-data');
+            const colorAleatorio = colores[Math.floor(Math.random() * colores.length)];
+            
+            sensorDiv.style.background = colorAleatorio;
+        }
+
+        // Actualizar datos automáticamente cada 5 segundos
+        setInterval(actualizarDatos, 5000);
+        
+        // Cargar datos al iniciar
+        actualizarDatos();
+    </script>
+</body>
+</html>

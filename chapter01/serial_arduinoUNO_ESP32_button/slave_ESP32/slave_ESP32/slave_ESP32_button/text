@@ -1,0 +1,50 @@
+// #include <HardwareSerial.h>
+// HardwareSerial SerialPort(2); // Usar UART2
+
+// void setup() {
+//   Serial.begin(9600); // Para monitor PC
+//   SerialPort.begin(9600, SERIAL_8N1, 16, 17); // RX=16, TX=17
+  
+//   Serial.println("ESP32 - Modo Receptor");
+//   Serial.println("Esperando datos del Arduino UNO...");
+// }
+
+// void loop() {
+//   if (SerialPort.available()) {
+//     String mensaje = SerialPort.readStringUntil('\n');
+//     mensaje.trim(); // IMPORTANTE: limpiar caracteres extra
+
+//     // Mostrar el dato recibido en monitor PC
+//     Serial.print("Dato recibido_: ");
+//     Serial.println(mensaje);
+//   }
+// }
+
+#define RX_ 16
+#define TX_ 17
+
+void setup() {
+  Serial.begin(9600);
+  Serial2.begin(9600, SERIAL_8N1, RX_, TX_);
+  delay(1000);
+  Serial.println("ESP32 - Receptor listo");
+}
+
+void loop() {
+  // Leer del Mega y enviar al PC
+  if (Serial2.available()) {
+    String mensaje = Serial2.readStringUntil('\n');
+    mensaje.trim();
+    
+    if (mensaje.length() > 0) {
+      Serial.print("Dato del UNO: ");
+      Serial.println(mensaje);
+    }
+  }
+  
+  // // Opcional: Leer del PC y enviar al Mega
+  // if (Serial.available()) {
+  //   String command = Serial.readStringUntil('\n');
+  //   Serial2.println(command);
+  // }
+}

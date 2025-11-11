@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Temperatura tiempo real</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+body { font-family: sans-serif; padding: 20px; }
+canvas { background: #ffffff52; border: 3px solid #000000; }
+</style>
+</head>
+<body>
+<h2>Temperatura en tiempo real (°C)</h2>
+<button id="connect">Conectar ESP32</button>
+<canvas id="tempChart" width="300" height="200"></canvas>
+
+<script>
+let port;
+let reader;
+let buffer = '';
+
+const ctx = document.getElementById('tempChart').getContext('2d');
+const chart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: [], datasets: [{ label: 'Temperatura', data: [], borderColor: 'blue', fill: false }] },
+    options: { animation: false, responsive: true, scales: { y: { min: 0, max: 50 } } }
+});
+
+document.getElementById('connect').addEventListener('click', async () => {
+    try {
+        port = await navigator.serial.requestPort();
+        await port.open({ baudRate: 115200 });
+
+        const decoder = new TextDecoderStream();
+        port.readable.pipeTo(decoder.writable);
+        reader = decoder.readable.getReader();
+
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
+            if (value) {
+                buffer += value;
+                let lines = buffer.split('\n');
+                buffer = lines.pop(); // último fragmento incompleto
+                lines.forEach(line => {
+                    const temp = parseFloat(line.trim());
+                    if (!isNaN(temp)) updateChart(temp);
+                });
+            }
+        }
+    } catch (err) {
+        console.error('Error:', err);
+    }
+});
+
+function updateChart(temp) {
+    const time = new Date().toLocaleTimeString();
+    chart.data.labels.push(time);
+    chart.data.datasets[0].data.push(temp);
+
+    // Mantener últimos 100 puntos
+    if (chart.data.labels.length > 100) {
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+
+    chart.update();
+}
+</script>
+</body>
+</html>
